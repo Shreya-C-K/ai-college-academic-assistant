@@ -1,0 +1,31 @@
+# ---------- SECRETS (never commit) ----------
+.env
+.env.*
+!.env.example
+*.key
+secrets/
+
+# ---------- Python ----------
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# ---------- Generated files (rebuilt by `python ingest.py`) ----------
+vectorstore/
+*.faiss
+*.pkl
+
+# ---------- Model caches ----------
+.cache/
+fastembed_cache/
+local_cache/
+
+# ---------- Editor / OS ----------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
