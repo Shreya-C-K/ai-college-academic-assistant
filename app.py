@@ -52,8 +52,10 @@ if not (config.VECTORSTORE_DIR / "index.faiss").exists():
     st.error("Vector store not built yet. Run `python ingest.py` in the terminal, then refresh.")
     st.stop()
 
-from graph import run_graph          # noqa: E402
-from rag import basic_llm_answer     # noqa: E402
+from dashboard import render_dashboard      # noqa: E402  (NEW)
+from graph import run_graph                 # noqa: E402
+from quiz import render_quiz_tab            # noqa: E402  (NEW)
+from rag import basic_llm_answer            # noqa: E402
 
 # ------------------------------------------------------------------ session
 ss = st.session_state
@@ -110,8 +112,12 @@ if prompt:
     handle(prompt)
 
 # ------------------------------------------------------------------ tabs
-tab_chat, tab_plan = st.tabs(
-    ["💬 Assistant", "📅 Study Planner"])
+tab_home, tab_chat, tab_plan, tab_quiz = st.tabs(
+    ["🏠 Dashboard", "💬 Assistant", "📅 Study Planner", "📝 Quiz Me"])
+
+# ============================== DASHBOARD TAB (NEW)
+with tab_home:
+    render_dashboard(ss.plan)
 
 # ============================== CHAT TAB
 with tab_chat:
@@ -133,8 +139,7 @@ with tab_chat:
     for m in ss.messages:
         with st.chat_message(m["role"], avatar="🧑‍🎓" if m["role"] == "user" else "🎓"):
             st.markdown(m["content"])
-            
-           
+
 # ============================== PLANNER TAB
 with tab_plan:
     st.markdown("#### Build a personalized study plan")
@@ -192,3 +197,7 @@ with tab_plan:
         st.info("💡 You can also modify this plan in the Assistant tab, e.g. 'Make Sundays a rest day'.")
     else:
         st.info("Fill in the details above and click **Generate study plan**, or ask the assistant in chat.")
+
+# ============================== QUIZ TAB (NEW)
+with tab_quiz:
+    render_quiz_tab()
