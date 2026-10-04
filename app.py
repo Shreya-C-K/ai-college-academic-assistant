@@ -75,28 +75,13 @@ with st.sidebar:
         "Assistant mode",
         ["RAG Assistant (LangGraph)", "Basic LLM (no documents)"],
         help="Switch to Basic LLM to see how a plain chatbot invents college-specific facts.")
-    st.divider()
-    st.markdown("**System status**")
-    n_docs = len([p for p in config.DATA_DIR.glob("*") if p.suffix.lower() in {".md", ".txt", ".pdf"}])
-    st.markdown(f"- 🤖 Model: `{config.GROQ_MODEL if config.LLM_PROVIDER == 'groq' else config.GEMINI_MODEL}`")
-    st.markdown(f"- 📚 Documents indexed: **{n_docs}**")
-    st.markdown("- 🧠 Embeddings: `MiniLM-L6-v2`")
-    st.markdown("- 🗄️ Vector DB: `FAISS`")
-    st.divider()
-    if st.button("🗑️ Clear conversation"):
-        ss.messages, ss.history, ss.profile, ss.plan = [], [], {}, None
-        st.rerun()
-    st.caption("Built with LangChain · LangGraph · FAISS · Streamlit")
+
 
 # ------------------------------------------------------------------ hero
 st.markdown(f"""
 <div class="hero">
   <h1>🎓 {config.ASSISTANT_NAME} - AI College Academic Assistant</h1>
   <p>Ask about regulations, exams, courses and internships. Calculate SGPA and attendance. Get a personalized study plan.</p>
-  <div class="badges">
-    <span class="badge">RAG</span><span class="badge">LangChain</span><span class="badge">LangGraph</span>
-    <span class="badge">Tools</span><span class="badge">Study Planner</span><span class="badge">Conversational memory</span>
-  </div>
 </div>
 """, unsafe_allow_html=True)
 
