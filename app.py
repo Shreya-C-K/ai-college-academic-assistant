@@ -133,9 +133,7 @@ with tab_chat:
     for m in ss.messages:
         with st.chat_message(m["role"], avatar="🧑‍🎓" if m["role"] == "user" else "🎓"):
             st.markdown(m["content"])
-            if m.get("sources"):
-                st.markdown("".join(f'<span class="src">📄 {s}</span>' for s in m["sources"]),
-                            unsafe_allow_html=True)
+            
            
 # ============================== PLANNER TAB
 with tab_plan:
