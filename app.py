@@ -125,8 +125,8 @@ if prompt:
     handle(prompt)
 
 # ------------------------------------------------------------------ tabs
-tab_chat, tab_plan, tab_arch, tab_eval = st.tabs(
-    ["💬 Assistant", "📅 Study Planner", "🧭 Architecture", "📊 Evaluation"])
+tab_chat, tab_plan = st.tabs(
+    ["💬 Assistant", "📅 Study Planner"])
 
 # ============================== CHAT TAB
 with tab_chat:
@@ -140,7 +140,6 @@ with tab_chat:
             "I attended 33 of 50 classes in OS. How many more to reach 75%?",
             "My grades: DAA A, DBMS O, OS B+ with credits 4,4,3. What's my SGPA?",
             "Create a study plan for DBMS, OS and ML, 3 hours a day, exam on 23 Nov",
-            "Who won the 2022 FIFA World Cup?",
         ]
         cols = st.columns(2)
         for i, ex in enumerate(examples):
@@ -210,58 +209,3 @@ with tab_plan:
         st.info("💡 You can also modify this plan in the Assistant tab, e.g. 'Make Sundays a rest day'.")
     else:
         st.info("Fill in the details above and click **Generate study plan**, or ask the assistant in chat.")
-
-# ============================== ARCHITECTURE TAB
-with tab_arch:
-    st.markdown("#### LangGraph workflow")
-    st.graphviz_chart("""
-    digraph G {
-        rankdir=LR; bgcolor="transparent";
-        node [shape=box, style="rounded,filled", fillcolor="#ede9fe", color="#7c3aed", fontname="Helvetica", fontsize=11];
-        edge [color="#6b7280", fontname="Helvetica", fontsize=9];
-        start [label="Student\\nquestion", shape=oval, fillcolor="#fce7f3", color="#db2777"];
-        qa [label="question_analysis\\n(intent + rewrite)"];
-        ret [label="information_retrieval\\n(FAISS + threshold)"];
-        tool [label="tool_node\\n(SGPA, attendance,\\ncalendar, calculator)"];
-        plan [label="planner_node\\n(create / modify plan)"];
-        gen [label="response_generation"];
-        rev [label="response_review\\n(grounding check)"];
-        fb [label="fallback\\n(not in documents)", fillcolor="#fee2e2", color="#dc2626"];
-        end [label="Answer", shape=oval, fillcolor="#dcfce7", color="#16a34a"];
-        start -> qa;
-        qa -> ret [label="Q&A / course info"];
-        qa -> tool [label="calculation"];
-        qa -> plan [label="study plan"];
-        qa -> gen [label="chit-chat"];
-        qa -> fb [label="out of scope"];
-        tool -> ret;
-        ret -> gen [label="relevant"];
-        ret -> fb [label="nothing found"];
-        plan -> gen;
-        gen -> rev;
-        rev -> end [label="grounded"];
-        rev -> gen [label="retry once", style=dashed];
-        fb -> end;
-    }
-    """)
-    a, b, c = st.columns(3)
-    a.markdown('<div class="card"><b>📥 Ingestion</b><br>Load documents → clean → chunk (900 / 150) → '
-               'embed with MiniLM → store in FAISS.</div>', unsafe_allow_html=True)
-    b.markdown('<div class="card"><b>🔎 Retrieval</b><br>Top-4 chunks with a distance threshold. '
-               'Weak matches trigger the fallback node instead of guessing.</div>', unsafe_allow_html=True)
-    c.markdown('<div class="card"><b>✅ Review</b><br>An LLM fact-checker verifies every claim against the '
-               'retrieved context and forces one strict retry.</div>', unsafe_allow_html=True)
-
-# ============================== EVALUATION TAB
-with tab_eval:
-    st.markdown("#### Test results and LLM vs RAG comparison")
-    t_file, c_file = config.RESULTS_DIR / "test_report.md", config.RESULTS_DIR / "comparison.md"
-    if t_file.exists():
-        st.markdown(t_file.read_text(encoding="utf-8"))
-    else:
-        st.info("No test report yet. Run `python tests.py` in the terminal.")
-    st.divider()
-    if c_file.exists():
-        st.markdown(c_file.read_text(encoding="utf-8"))
-    else:
-        st.info("No comparison yet. Run `python compare.py` in the terminal.")

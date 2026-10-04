@@ -11,8 +11,8 @@ DATA_DIR = BASE_DIR / "data"
 VECTORSTORE_DIR = BASE_DIR / "vectorstore"
 RESULTS_DIR = BASE_DIR / "results"
 
-COLLEGE_NAME = "NMAM  Institute of Technology"
-ASSISTANT_NAME = "NMAM Bot"
+COLLEGE_NAME = "NMAM Institute of Technology"
+ASSISTANT_NAME = "NMAMIT Bot"
 
 # --- Embeddings / chunking / retrieval ---
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
