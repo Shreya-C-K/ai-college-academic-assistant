@@ -175,7 +175,7 @@ def response_review(state: State):
         "question": state["standalone_question"], "context": _combined_context(state),
         "answer": state["answer"]})
     data = parse_json(raw) or {}
-    if data.get("grounded", True):
+    if data.get("grounded", False):
         return {"review_passed": True, "trace": ["response_review -> PASSED (answer grounded in context)"]}
     retries = state.get("retries", 0)
     reason = data.get("reason", "unsupported claim")

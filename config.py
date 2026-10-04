@@ -18,10 +18,10 @@ ASSISTANT_NAME = "NMAM Bot"
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 CHUNK_SIZE = 900
 CHUNK_OVERLAP = 150
-TOP_K = 4
+TOP_K = 3
 # FAISS returns squared L2 distance on normalized vectors (= 2 - 2*cosine).
 # Lower = more similar. Chunks above this threshold are treated as "not relevant".
-MAX_L2_DISTANCE = float(os.getenv("MAX_L2_DISTANCE", "1.45"))
+MAX_L2_DISTANCE = float(os.getenv("MAX_L2_DISTANCE", "1.30"))
 
 # --- LLM ---
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq").lower()

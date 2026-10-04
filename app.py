@@ -152,11 +152,7 @@ with tab_chat:
             if m.get("sources"):
                 st.markdown("".join(f'<span class="src">📄 {s}</span>' for s in m["sources"]),
                             unsafe_allow_html=True)
-            if m.get("trace"):
-                with st.expander("🔍 How I answered (LangGraph workflow trace)"):
-                    for step in m["trace"]:
-                        st.markdown(f"- `{step}`")
-
+           
 # ============================== PLANNER TAB
 with tab_plan:
     st.markdown("#### Build a personalized study plan")
